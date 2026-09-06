@@ -16,7 +16,7 @@ It uses:
 
 ## Interface
 
-![image alt]()
+![image alt](https://github.com/Abeesh-2027/Credit-card-fraud-detection/blob/71218c78ace94df657db61a1c38c98eff91bf598/Screenshot%202026-09-06%20111322.png)
 
 ## Dashboard
 
