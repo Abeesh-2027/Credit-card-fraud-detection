@@ -1,112 +1,325 @@
 # FraudWatch — Credit Card Fraud Detection
 
-A small full-stack demo:
-- **Backend** (`/backend`): FastAPI + scikit-learn (RandomForest) trained on a
-  synthetic transaction dataset, with JWT login protecting the API.
-- **Frontend** (`/frontend`): plain HTML/CSS/JS — a login page and a
-  fraud-risk dashboard. No build step, no framework.
+FraudWatch is a simple full-stack web application that detects the **risk of credit card fraud** using Machine Learning.
 
+It uses:
+
+* **FastAPI** for the backend
+* **Random Forest** for fraud detection
+* **JWT** for login authentication
+* **HTML, CSS, and JavaScript** for the frontend
+* **Render** for backend deployment
+* **Vercel** for frontend deployment
+
+---
+
+## 📁 Project Structure
+
+```text
+FraudWatch/
+│
+├── backend/
+│   ├── main.py
+│   ├── auth.py
+│   ├── model.py
+│   ├── requirements.txt
+│   ├── render.yaml
+│   └── .env.example
+│
+└── frontend/
+    ├── index.html
+    ├── dashboard.html
+    ├── login.css
+    ├── login.js
+    ├── dashboard.css
+    ├── dashboard.js
+    ├── config.js
+    └── images/
 ```
-frontend/
-  index.html       login page
-  dashboard.html   fraud detection console (protected)
-  login.css / login.js
-  dashboard.css / dashboard.js
-  config.js        <- points the frontend at your backend URL
-  images/
 
-backend/
-  main.py          FastAPI app + routes
-  auth.py          login / JWT handling
-  model.py         synthetic data + RandomForest training
-  requirements.txt
-  render.yaml
-  .env.example
+---
+
+## 🔐 Login
+
+The application uses JWT authentication.
+
+Default demo login:
+
+```text
+Username: admin
+Password: 12345
 ```
 
-## How auth works
+You can change the username and password using environment variables:
 
-This ships with **one demo account** (no database) so the login page has
-something real to check against:
+```text
+DEMO_USERNAME
+DEMO_PASSWORD
+```
 
-- Username: `admin`
-- Password: `12345`
+After login, the server provides a JWT token.
 
-Set your own via the `DEMO_USERNAME` / `DEMO_PASSWORD` environment variables.
-`POST /api/auth/login` returns a JWT; the dashboard sends it as
-`Authorization: Bearer <token>` on every API call. `/api/predict` and
-`/api/model-info` reject requests without a valid token (401).
-For real multi-user auth, swap `verify_credentials` in `backend/auth.py`
-for a database lookup with hashed passwords.
+The token is used to access protected API endpoints.
 
-## Run it locally
+---
 
-**Backend**
+## 🤖 How Fraud Detection Works
+
+The backend uses a **Random Forest Machine Learning model**.
+
+The basic process is:
+
+```text
+Transaction Details
+        ↓
+Machine Learning Model
+        ↓
+Fraud Risk Prediction
+        ↓
+Risk Probability
+        ↓
+Dashboard Result
+```
+
+The model is currently trained using **synthetic data** generated inside `model.py`.
+
+> This project is for demonstration and learning purposes. The synthetic dataset does not represent real-world fraud patterns.
+
+---
+
+# 🚀 Run Locally
+
+## 1. Start the Backend
+
+Open a terminal and run:
+
 ```bash
 cd backend
 pip install -r requirements.txt
-cp .env.example .env        # edit values if you want
+```
+
+Create your environment file:
+
+```bash
+cp .env.example .env
+```
+
+Then start the FastAPI server:
+
+```bash
 uvicorn main:app --reload --port 8000
 ```
-This trains the model on first startup (a few seconds) and serves the API at
-`http://127.0.0.1:8000`.
 
-**Frontend**
-`config.js` already auto-detects `localhost` and points at
-`http://127.0.0.1:8000`, so you just need to serve the static files:
+The backend will run at:
+
+```text
+http://127.0.0.1:8000
+```
+
+You can also open the FastAPI documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 2. Start the Frontend
+
+Open another terminal:
+
 ```bash
 cd frontend
 python3 -m http.server 5500
 ```
-Open `http://127.0.0.1:5500`, log in with `admin` / `12345`.
 
-## Deploy the backend to Render
+Open:
 
-1. Push this project to a GitHub repo.
-2. In Render: **New → Blueprint**, point it at your repo — it will pick up
-   `backend/render.yaml` automatically and create the service.
-   (Or **New → Web Service** manually: root directory `backend`,
-   build command `pip install -r requirements.txt`,
-   start command `uvicorn main:app --host 0.0.0.0 --port $PORT`.)
-3. In the service's **Environment** tab, set:
-   - `SECRET_KEY` — a long random string (Render's blueprint auto-generates one)
-   - `DEMO_USERNAME`, `DEMO_PASSWORD` — your real demo login
-   - `ALLOWED_ORIGINS` — leave as `*` for now, you'll fix this in step 5
-4. Deploy. Note your backend URL, e.g. `https://fraud-detection-api.onrender.com`.
-   Check it works: `https://fraud-detection-api.onrender.com/api/health`.
-
-   Free-tier Render services sleep after inactivity — the first request after
-   a while can take ~30–50s to wake up. That's normal.
-
-## Deploy the frontend to Vercel
-
-1. In `frontend/config.js`, set `PRODUCTION_API_BASE` to your Render URL:
-   ```js
-   const PRODUCTION_API_BASE = "https://fraud-detection-api.onrender.com";
-   ```
-2. In Vercel: **New Project**, import the repo, set the **root directory**
-   to `frontend`. No framework/build step needed — leave build command empty
-   and output directory as `frontend` (Vercel auto-detects a static site).
-3. Deploy. Note your frontend URL, e.g. `https://fraudwatch.vercel.app`.
-
-## Connect them (CORS)
-
-Go back to Render → your backend service → **Environment**, and set:
+```text
+http://127.0.0.1:5500
 ```
+
+Login using:
+
+```text
+Username: admin
+Password: 12345
+```
+
+---
+
+# ☁️ Deploy Backend to Render
+
+### Step 1 — Push to GitHub
+
+Push the project to your GitHub repository.
+
+### Step 2 — Create Render Service
+
+In Render:
+
+```text
+New → Web Service
+```
+
+Use:
+
+```text
+Root Directory: backend
+```
+
+Build Command:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start Command:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+**Important:** Use `0.0.0.0` and `$PORT` on Render.
+
+### Step 3 — Add Environment Variables
+
+Add:
+
+```text
+SECRET_KEY=your-secret-key
+DEMO_USERNAME=admin
+DEMO_PASSWORD=12345
+ALLOWED_ORIGINS=*
+```
+
+After deployment, Render will give you a backend URL such as:
+
+```text
+https://your-backend-name.onrender.com
+```
+
+Test the backend:
+
+```text
+https://your-backend-name.onrender.com/api/health
+```
+
+---
+
+# 🌐 Deploy Frontend to Vercel
+
+Open:
+
+```text
+frontend/config.js
+```
+
+Change the production API URL:
+
+```javascript
+const PRODUCTION_API_BASE = "https://your-backend-name.onrender.com";
+```
+
+Then deploy the `frontend` folder to Vercel.
+
+In Vercel:
+
+```text
+Root Directory: frontend
+```
+
+No framework or build command is required.
+
+After deployment, you will get a URL similar to:
+
+```text
+https://fraudwatch.vercel.app
+```
+
+---
+
+# 🔗 Connect Frontend and Backend
+
+After getting your Vercel URL, go back to Render.
+
+Change:
+
+```text
+ALLOWED_ORIGINS=*
+```
+
+to:
+
+```text
 ALLOWED_ORIGINS=https://fraudwatch.vercel.app
 ```
-(comma-separate multiple origins if you have a preview URL too). Redeploy the
-backend so the new CORS setting takes effect. Without this step the browser
-will block the frontend's requests to the API with a CORS error.
 
-Now open your Vercel URL, log in, and the dashboard will be calling your
-live Render API.
+Then redeploy the backend.
 
-## Notes
+Now the flow is:
 
-- The model is trained on **synthetic** data generated in `model.py` — it
-  demonstrates the pipeline (features → RandomForest → probability →
-  explanation), not real-world fraud patterns. Swap `generate_dataset()` for
-  a loader over real labeled transaction data to make it production-relevant.
-- Session tokens live in `sessionStorage`, so logging out or closing the tab
-  clears them; they also expire server-side after `ACCESS_TOKEN_MINUTES`.
+```text
+Vercel Frontend
+       ↓
+Render FastAPI Backend
+       ↓
+Random Forest Model
+       ↓
+Fraud Prediction
+       ↓
+Dashboard
+```
+
+---
+
+# 🔒 Security
+
+The project uses:
+
+* JWT authentication
+* Protected API endpoints
+* Environment variables for secrets
+* Session storage for login tokens
+* CORS protection
+
+The JWT token is stored in the browser's `sessionStorage`.
+
+Logging out or closing the browser tab removes the session.
+
+---
+
+# ⚠️ Disclaimer
+
+FraudWatch is an **educational/demo project**.
+
+The Machine Learning model uses synthetic data and should **not** be used for real financial fraud detection without proper validation, real-world data, security testing, and production-level infrastructure.
+
+---
+
+## 🛠️ Technologies Used
+
+| Technology    | Purpose                |
+| ------------- | ---------------------- |
+| Python        | Backend programming    |
+| FastAPI       | REST API               |
+| Scikit-learn  | Machine Learning       |
+| Random Forest | Fraud prediction       |
+| JWT           | Authentication         |
+| HTML          | Frontend structure     |
+| CSS           | Frontend design        |
+| JavaScript    | Frontend functionality |
+| Render        | Backend deployment     |
+| Vercel        | Frontend deployment    |
+
+---
+
+## 👨‍💻 Project
+
+**FraudWatch — Credit Card Fraud Detection**
+
+A simple full-stack Machine Learning project demonstrating:
+
+```text
+Frontend + Backend + Authentication + Machine Learning + Deployment
+```
