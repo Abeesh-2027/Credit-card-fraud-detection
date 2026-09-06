@@ -12,6 +12,17 @@ It uses:
 * **Vercel** for frontend deployment
 
 ---
+## Screenshot
+
+## Interface
+
+![image alt]()
+
+## Dashboard
+
+![image alt]()
+
+---
 
 ## 📁 Project Structure
 
