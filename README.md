@@ -20,7 +20,7 @@ It uses:
 
 ## Dashboard
 
-![image alt]()
+![image alt](https://github.com/Abeesh-2027/Credit-card-fraud-detection/blob/dd846759505441debdfffe1a7d2608e33d7c2b74/Screenshot%202026-09-06%20111355.png)
 
 ---
 
