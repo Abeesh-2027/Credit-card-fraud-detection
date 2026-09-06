@@ -1,0 +1,383 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+    min-height: 100svh;
+
+    background-color: #030f24;
+    background-image: url("images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 40px 8%;
+    padding: max(40px, env(safe-area-inset-top)) max(8%, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(8%, env(safe-area-inset-left));
+
+    overflow-x: hidden;
+}
+
+/* Serve a lighter background image to phones to save data / speed up load */
+@media (max-width: 700px) {
+    body {
+        background-image: url("images/background-mobile.jpg");
+    }
+}
+
+.container {
+    width: 400px;
+    max-width: 100%;
+
+    padding: 42px 38px;
+
+    background: rgba(3, 20, 55, 0.88);
+
+    border: 1px solid rgba(0, 174, 255, 0.45);
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 30px rgba(0, 140, 255, 0.20),
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: white;
+}
+
+
+.container h1 {
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 700;
+    color: #ffffff;
+
+    margin-bottom: 8px;
+
+    text-align: center;
+}
+
+.container > p:first-of-type {
+    color: #9bb9d8;
+    font-size: 15px;
+
+    text-align: center;
+
+    margin-bottom: 32px;
+}
+
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #d7eaff;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+input {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(88, 180, 255, 0.35);
+    border-radius: 9px;
+
+    background: rgba(4, 35, 75, 0.85);
+
+    color: white;
+
+    font-size: 16px; /* 16px prevents iOS Safari from auto-zooming on focus */
+
+    outline: none;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+input::placeholder {
+    color: #7894b5;
+}
+
+input:focus {
+    border-color: #00aaff;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 170, 255, 0.12),
+        0 0 15px rgba(0, 170, 255, 0.18);
+
+    background: rgba(5, 42, 88, 0.95);
+}
+
+input:focus-visible {
+    outline: 2px solid #00aaff;
+    outline-offset: 2px;
+}
+
+input.input-error {
+    border-color: rgba(255, 90, 90, 0.75);
+}
+
+.error-message {
+    display: none;
+    color: #ff9b9b;
+    background: rgba(120, 20, 20, 0.35);
+    border: 1px solid rgba(255, 90, 90, 0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.error-message.visible {
+    display: block;
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 4px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: linear-gradient(
+        135deg,
+        #008cff,
+        #0055ff
+    );
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+        0 6px 20px rgba(0, 119, 255, 0.30);
+}
+
+button:hover {
+    transform: translateY(-2px);
+
+    background: linear-gradient(
+        135deg,
+        #00aaff,
+        #0066ff
+    );
+
+    box-shadow:
+        0 8px 25px rgba(0, 140, 255, 0.45);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+
+.container > p:nth-of-type(2) {
+    text-align: center;
+
+    margin: 22px 0;
+
+    color: #6f8eae;
+
+    font-size: 13px;
+}
+
+
+
+.container h3 {
+    text-align: center;
+
+    color: #dceeff;
+
+    font-size: 15px;
+
+    margin-bottom: 8px;
+}
+
+.container > p:last-of-type {
+    text-align: center;
+
+    color: #7796b7;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.demo-hint {
+    text-align: center;
+    margin-top: 18px;
+    color: #6f8eae;
+    font-size: 12px;
+}
+
+.demo-hint strong {
+    color: #bcd8f5;
+}
+
+
+
+@media (max-width: 1100px) {
+
+    body {
+        justify-content: center;
+
+        padding: 30px;
+    }
+
+    .container {
+        width: 390px;
+    }
+}
+
+
+
+@media (max-width: 600px) {
+
+    body {
+        justify-content: center;
+        align-items: center;
+
+        padding: 20px;
+
+        background-position: 30% center;
+
+        background-attachment: scroll;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 380px;
+
+        padding: 32px 25px;
+
+        border-radius: 15px;
+
+        background: rgba(2, 18, 48, 0.93);
+    }
+
+    .container > p:first-of-type {
+        font-size: 14px;
+
+        margin-bottom: 26px;
+    }
+
+    input {
+        padding: 13px;
+    }
+
+    button {
+        padding: 13px;
+    }
+}
+
+
+
+@media (max-width: 380px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 27px 20px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+}
+
+
+@media (max-height: 650px) and (min-width: 601px) {
+
+    body {
+        align-items: flex-start;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .container {
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+    .container > p:first-of-type {
+        margin-bottom: 20px;
+    }
+
+    input {
+        margin-bottom: 14px;
+    }
+}
+
+/* Short mobile screens (landscape phones) */
+@media (max-height: 500px) {
+    body {
+        align-items: flex-start;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .container {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    .container > p:first-of-type {
+        margin-bottom: 14px;
+    }
+
+    input {
+        margin-bottom: 12px;
+        padding: 10px 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

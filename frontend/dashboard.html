@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraudWatch — Transaction Risk Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◆</span>
+    <span class="brand-name">FraudWatch</span>
+  </div>
+  <div class="topbar-right">
+    <div class="model-status" id="modelStatus">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">checking model…</span>
+    </div>
+    <span class="user-chip" id="userChip"></span>
+    <button class="logout-btn" id="logoutBtn" type="button">Log out</button>
+  </div>
+</header>
+
+<main class="console">
+
+  <section class="panel input-panel">
+    <div class="panel-head">
+      <h1>Transaction</h1>
+      <p>Enter the details of a card transaction to score its fraud risk.</p>
+    </div>
+
+    <form id="txnForm">
+      <div class="field">
+        <label for="amount">Amount</label>
+        <div class="field-input">
+          <span class="prefix">$</span>
+          <input type="number" id="amount" name="amount" step="0.01" min="0" value="842.50" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="hour">Hour of day</label>
+          <input type="number" id="hour" name="hour" min="0" max="23" step="1" value="3" required>
+        </div>
+        <div class="field">
+          <label for="txns_last_24h">Txns, last 24h</label>
+          <input type="number" id="txns_last_24h" name="txns_last_24h" min="0" step="1" value="6" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="distance_from_home_km">Distance from home (km)</label>
+          <input type="number" id="distance_from_home_km" name="distance_from_home_km" min="0" step="1" value="620" required>
+        </div>
+        <div class="field">
+          <label for="distance_from_last_txn_km">Distance from last txn (km)</label>
+          <input type="number" id="distance_from_last_txn_km" name="distance_from_last_txn_km" min="0" step="1" value="580" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ratio_to_median_spend">Amount ÷ cardholder's median spend</label>
+        <input type="number" id="ratio_to_median_spend" name="ratio_to_median_spend" min="0" step="0.1" value="7.2" required>
+      </div>
+
+      <div class="field toggles">
+        <label class="toggle">
+          <input type="checkbox" id="is_foreign" name="is_foreign" checked>
+          <span class="toggle-box"></span>
+          <span>Foreign transaction</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="is_online" name="is_online" checked>
+          <span class="toggle-box"></span>
+          <span>Card-not-present / online</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="is_new_merchant" name="is_new_merchant" checked>
+          <span class="toggle-box"></span>
+          <span>New merchant for this cardholder</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="card_present" name="card_present">
+          <span class="toggle-box"></span>
+          <span>Physical card present</span>
+        </label>
+      </div>
+
+      <div class="presets">
+        <span>Try:</span>
+        <button type="button" class="preset-btn" data-preset="typical">Typical grocery run</button>
+        <button type="button" class="preset-btn" data-preset="suspicious">Suspicious pattern</button>
+      </div>
+
+      <button type="submit" class="analyze-btn" id="analyzeBtn">
+        <span>Analyze transaction</span>
+      </button>
+    </form>
+  </section>
+
+  <section class="panel result-panel" id="resultPanel">
+    <div class="panel-head">
+      <h1>Risk assessment</h1>
+      <p>Model output for the transaction on the left.</p>
+    </div>
+
+    <div class="gauge-wrap">
+      <div class="gauge" id="gauge">
+        <div class="gauge-inner">
+          <span class="gauge-value" id="gaugeValue">—</span>
+          <span class="gauge-label">fraud probability</span>
+        </div>
+      </div>
+      <div class="verdict" id="verdict">
+        <span class="verdict-badge" id="verdictBadge">AWAITING INPUT</span>
+      </div>
+    </div>
+
+    <div class="signals" id="signals">
+      <h2>Top contributing signals</h2>
+      <ul id="signalsList" class="signals-list">
+        <li class="signal-placeholder">Run an analysis to see which factors drove the score.</li>
+      </ul>
+    </div>
+
+    <div class="metrics" id="metricsBar">
+      <div class="metric">
+        <span class="metric-value" id="metricAuc">—</span>
+        <span class="metric-label">Model ROC-AUC</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value" id="metricPrecision">—</span>
+        <span class="metric-label">Precision (fraud)</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value" id="metricRecall">—</span>
+        <span class="metric-label">Recall (fraud)</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footnote">
+  Trained on synthetic transaction data for demonstration. Not connected to any real card network.
+</footer>
+
+<script src="config.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

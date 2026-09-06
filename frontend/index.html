@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Login — FraudWatch</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Welcome Back</h1>
+
+        <p>Log in to your FraudWatch account</p>
+
+        <form id="loginForm" novalidate>
+
+            <label for="name">Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                inputmode="numeric"
+                placeholder="Enter 5 digit password"
+                autocomplete="current-password"
+                required
+            >
+
+            <p class="error-message" id="errorMessage" role="alert" aria-live="polite"></p>
+
+            <button id="loginButton" type="submit">
+                <span id="loginButtonText">Login</span>
+            </button>
+
+        </form>
+
+        <p>or</p>
+
+        <h3>Your data is safe with us</h3>
+
+        <p>
+            We use advanced security measures to protect<br>
+            your information and prevent fraud
+        </p>
+
+        <p class="demo-hint">Demo login — username <strong>admin</strong>, password <strong>12345</strong></p>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script src="login.js"></script>
+
+</body>
+
+</html>
