@@ -1,4 +1,4 @@
-const PRODUCTION_API_BASE = "https://YOUR-BACKEND-NAME.onrender.com";
+const PRODUCTION_API_BASE = "https://credit-card-fraud-detection-1-2cyw.onrender.com";
 
 const API_BASE = (() => {
   const host = window.location.hostname;
